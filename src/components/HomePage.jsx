@@ -7,17 +7,23 @@ function HomePage() {
   const [entries, setEntries] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const storedEntries = localStorage.getItem('entries' || []);
-  
-  useEffect(() => {  
-    if (storedEntries) {
-      setEntries(JSON.parse(storedEntries));
-    }
-  }, []);
-
+  // Fetch posts from the backend when the component mounts
   useEffect(() => {
-    localStorage.setItem('entries', JSON.stringify(entries));
-  }, [entries]);
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/api/posts'); // Fetching posts
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); // Parse the JSON response
+        setEntries(data); // Update the state with fetched entries
+      } catch (error) {
+        console.error('Failed to fetch posts:', error);
+      }
+    };
+
+    fetchPosts(); // Call the fetch function
+  }, []); // Empty dependency array means this runs once when the component mounts
 
   const handleAddEntryClick = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -27,15 +33,23 @@ function HomePage() {
     setIsModalOpen(false);
   };
 
+  const handleLogoutClick = () => {
+    // Your logout logic here
+  };
+
+  const handleEntryClick = (entryId) => {
+    // Your entry click logic here
+  };
+
   return (
     <div className="min-h-screen p-4 bg-gradient-to-b from-red-400 to-gray-700">
       <div className="flex justify-center mb-6">
         <img src="http://i.huffpost.com/gen/2395634/images/o-DIARY-facebook.jpg" alt="Login Illustration" className="h-100% w-100% sm:h-40 sm:w-40 lg:w-60 lg:h-60" />
       </div>
       <div className="flex justify-center mb-6">
-        <Header onAddEntryClick={handleAddEntryClick} />
+        <Header onAddEntryClick={handleAddEntryClick} onLogoutClick={handleLogoutClick} />
       </div>
-      <EntryList entries={entries} />
+      <EntryList entries={entries} onEntryClick={handleEntryClick} />
       <AddEntryModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}

@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import HomePage from './components/HomePage';
-import LoginPage from './components/loginpage'; 
-import SignUpPage from './components/signuppage';
-import ForgotPasswordPage from './components/ForgotPasswordpage';
+import LoginPage from './components/LoginPage'; 
+import SignUpPage from './components/SignUpPage';
+import ForgotPasswordPage from './components/ForgotPasswordPage';
+import CreatePostPage from './components/CreatePostPage'; // Import Create Post
+import PostDetailsPage from './components/PostDetailsPage'; // Import Post Details
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,6 +32,14 @@ function App() {
         <Route
           path="/forgot-password"
           element={<ForgotPasswordPage />}
+        />
+        <Route
+          path="/create"
+          element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />} // Protected Route
+        />
+        <Route
+          path="/posts/:id"
+          element={isLoggedIn ? <PostDetailsPage /> : <Navigate to="/login" />} // Protected Route
         />
       </Routes>
     </Router>
