@@ -4,9 +4,9 @@ import { getPosts, createPost, updatePost, deletePost } from '../controllers/pos
 const router = express.Router();
 
 // Define routes
-router.get('/posts', getPosts);           // GET /api/posts
-router.post('/posts', createPost);         // POST /api/posts
-router.put('/posts/:id', updatePost);     // PUT /api/posts/:id
-router.delete('/posts/:id', deletePost);  // DELETE /api/posts/:id
+router.get('/entries', getPosts);           // GET /api/posts
+router.post('/entries', createPost);         // POST /api/posts
+router.put('/entries/:id', updatePost);     // PUT /api/posts/:id
+router.delete('/entries/:id', deletePost);  // DELETE /api/posts/:id
 
 export default router;

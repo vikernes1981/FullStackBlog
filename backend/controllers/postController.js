@@ -3,7 +3,7 @@ import pool from '../db.js';
 // Get all posts
 export const getPosts = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM posts');
+    const result = await pool.query('SELECT * FROM entries');
     res.json(result.rows);
   } catch (err) {
     console.error(err.message);
@@ -16,8 +16,8 @@ export const createPost = async (req, res) => {
   const { title, content, author, cover } = req.body;
   try {
     const result = await pool.query(
-      'INSERT INTO posts (title, content, author, cover, date) VALUES ($1, $2, $3, $4, NOW()) RETURNING *',
-      [title, content, author, cover]
+      'INSERT INTO entries (title, content, user_id, created_at) VALUES ($1, $2, $3, NOW()) RETURNING *',
+      [title, content, user_id]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -46,7 +46,7 @@ export const updatePost = async (req, res) => {
 export const deletePost = async (req, res) => {
   const { id } = req.params;
   try {
-    await pool.query('DELETE FROM posts WHERE id = $1', [id]);
+    await pool.query('DELETE FROM entries WHERE id = $1', [id]);
     res.json({ message: 'Post deleted successfully' });
   } catch (err) {
     console.error(err.message);
