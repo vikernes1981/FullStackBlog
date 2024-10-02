@@ -11,11 +11,12 @@ function HomePage() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/posts'); // Fetching posts
+        const response = await fetch('http://localhost:3000/api/entries'); // Fetching posts
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json(); // Parse the JSON response
+        console.log('Fetched entries:', data); // Log the fetched data
         setEntries(data); // Update the state with fetched entries
       } catch (error) {
         console.error('Failed to fetch posts:', error);
