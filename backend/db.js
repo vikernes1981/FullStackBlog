@@ -1,5 +1,7 @@
-import { Pool } from 'pg';
+import pg from "pg";
 import dotenv from 'dotenv';
+
+const { Pool } = pg;
 
 // Load environment variables
 dotenv.config();
