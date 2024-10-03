@@ -10,6 +10,20 @@ export const getPosts = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+// Get a post by ID
+export const getPost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('SELECT * FROM entries WHERE id = $1', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
 
 // Create a new post
 export const createPost = async (req, res) => {
