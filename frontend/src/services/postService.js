@@ -41,3 +41,17 @@ export const deletePost = async (id) => {
     }
     return await response.json(); // Optionally return the deleted post or a success message
 };
+
+export const updatePost = async (id, updatedFields) => {
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedFields),
+    });
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return await response.json();
+};
