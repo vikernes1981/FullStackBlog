@@ -8,10 +8,13 @@ import CreatePostPage from './components/CreatePostPage'; // Import Create Post
 import PostDetailsPage from './components/PostDetailsPage'; // Import Post Details
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  });
 
   const handleLogin = () => {
     setIsLoggedIn(true);
+    localStorage.setItem('isLoggedIn', 'true');
   };
 
   return (
