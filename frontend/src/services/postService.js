@@ -1,6 +1,6 @@
 // src/services/postService.js
 
-const API_URL = 'http://localhost:3001/api/posts'; // Update to the correct API endpoint
+const API_URL = 'http://localhost:3000/api/entries'; // Update to the correct API endpoint
 
 export const getPosts = async () => {
     const response = await fetch(API_URL);
