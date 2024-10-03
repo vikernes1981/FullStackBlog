@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 function EntryCard({ entry, onClick }) {  
 
-  const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-  if(loggedInUser.email !== entry.email) return null;
   return (  
     <div  
       className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"  

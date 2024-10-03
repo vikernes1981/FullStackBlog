@@ -12,6 +12,7 @@ function HomePage() {
     const fetchPosts = async () => {
       try {
         const response = await fetch('http://localhost:3000/api/entries'); // Fetching posts
+        console.log('Response:', response);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
