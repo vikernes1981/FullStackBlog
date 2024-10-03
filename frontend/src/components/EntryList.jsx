@@ -8,6 +8,9 @@ function EntryList({ entries, onEntryClick }) {
     localStorage.setItem('entries', JSON.stringify(entries));
   }, [entries]);
 
+  // Log entries to console
+  console.log('Entries:', entries);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {entries.map((entry) => (

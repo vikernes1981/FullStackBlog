@@ -38,7 +38,7 @@ function App() {
           element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />} // Protected Route
         />
         <Route
-          path="/posts/:id"
+          path="/entries/:id"
           element={isLoggedIn ? <PostDetailsPage /> : <Navigate to="/login" />} // Protected Route
         />
       </Routes>
