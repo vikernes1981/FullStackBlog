@@ -1,5 +1,6 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { createPost } from '../services/postService'; // Adjust the import path accordingly
 
 function AddEntryModal({ isOpen, onClose, onSave, entries }) {
   // Add prop validation
@@ -17,7 +18,7 @@ function AddEntryModal({ isOpen, onClose, onSave, entries }) {
 
   const email = JSON.parse(localStorage.getItem('loggedInUser')).email;
   
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!title || !date || !content) {
       alert('Please fill in all fields');
       return;
@@ -30,8 +31,15 @@ function AddEntryModal({ isOpen, onClose, onSave, entries }) {
     }
 
     const newEntry = { email, title, date, image, content };
-    onSave(newEntry);
-    onClose();
+
+    try {
+      const response = await createPost(newEntry);
+      onSave(newEntry);
+      onClose();
+    } catch (error) {
+      console.error('Error saving the entry:', error);
+      alert('An error occurred while saving the entry. Please try again.');
+    }
   };
 
   if (!isOpen) return null;
