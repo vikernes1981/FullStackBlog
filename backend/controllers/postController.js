@@ -27,16 +27,16 @@ export const getPost = async (req, res) => {
 
 // Create a new post
 export const createPost = async (req, res) => {
-  const {user_id, title, content} = req.body || {};
+  const { title, date, image, content } = req.body || {};
   console.log(req.body);
-  if (!title || !content || !user_id) {
-    console.log(title + content + user_id);  
-    return res.status(400).json({ error: 'Missing title, content, or user_id' });
+  if (!title || !date || !image || !content) {
+    console.log(title + date + image + content);
+    return res.status(400).json({ error: 'Missing title, date, image, or content' });
   }
   try {
     const result = await pool.query(
-      'INSERT INTO entries (user_id, title, content, created_at) VALUES ($1, $2, $3, NOW()) RETURNING *',
-      [user_id, title, content]
+      'INSERT INTO entries (title, date, image, content) VALUES ($1, $2, $3, $4) RETURNING *',
+      [title, date, image, content]
     );
     res.json(result.rows[0]);
   } catch (err) {
