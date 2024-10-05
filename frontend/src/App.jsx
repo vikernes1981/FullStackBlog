@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage'; 
 import SignUpPage from './components/SignUpPage';
-import ForgotPasswordPage from './components/ForgotPasswordPage';
 import CreatePostPage from './components/CreatePostPage'; // Import Create Post
 import PostDetailsPage from './components/PostDetailsPage'; // Import Post Details
 import UpdateEntryPage from './components/UpdateEntryModal';
@@ -33,10 +32,7 @@ function App() {
           path="/signup"
           element={<SignUpPage />}
         />
-        <Route
-          path="/forgot-password"
-          element={<ForgotPasswordPage />}
-        />
+
         <Route
           path="/create"
           element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />} // Protected Route
