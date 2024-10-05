@@ -6,6 +6,7 @@ import SignUpPage from './components/SignUpPage';
 import ForgotPasswordPage from './components/ForgotPasswordPage';
 import CreatePostPage from './components/CreatePostPage'; // Import Create Post
 import PostDetailsPage from './components/PostDetailsPage'; // Import Post Details
+import UpdateEntryPage from './components/UpdateEntryModal';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -43,6 +44,10 @@ function App() {
         <Route
           path="/entries/:id"
           element={isLoggedIn ? <PostDetailsPage /> : <Navigate to="/login" />} // Protected Route
+        />
+        <Route
+          path="/entries/:id"
+          element={isLoggedIn ? <UpdateEntryPage /> : <Navigate to="/login" />} // Protected Route
         />
       </Routes>
     </Router>

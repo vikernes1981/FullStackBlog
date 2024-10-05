@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { getPostById, deletePost } from '../services/postService'; // Import service
 import { useParams, Link } from 'react-router-dom';
+import UpdateEntryModal from './UpdateEntryModal'; // Import the modal component
 
 const PostDetailsPage = () => {
     const { id } = useParams();
     const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -36,6 +38,10 @@ const PostDetailsPage = () => {
         }
     };
 
+    const handleUpdate = (updatedPost) => {
+        setPost(updatedPost); // Update the post state with the updated post
+    };
+
     if (error) return <div className="alert alert-error">{error}</div>;
     if (!post) return <div className="loading loading-spinner loading-lg"></div>;
 
@@ -50,11 +56,17 @@ const PostDetailsPage = () => {
                     <div className="prose lg:prose-xl text-gray-700" dangerouslySetInnerHTML={{ __html: post.content }} />
                 </div>
                 <div className="text-center mt-4 flex flex-wrap justify-center gap-2">
-                    <Link to={`/update/${post.id}`} className="bg-gray-600 text-white py-1 px-3 rounded hover:bg-gray-800">Update Post</Link>
+                    <button onClick={() => setIsModalOpen(true)} className="bg-gray-600 text-white py-1 px-3 rounded hover:bg-gray-800">Update Post</button>
                     <button onClick={handleDelete} className="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-800">Delete Post</button>
                     <Link to="/" className="bg-gray-600 text-white py-1 px-3 rounded hover:bg-gray-800">Back to Posts</Link>
                 </div>
             </div>
+            <UpdateEntryModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onUpdate={handleUpdate}
+                entry={post}
+            />
         </div>
     );
 };
