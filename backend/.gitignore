@@ -27,4 +27,4 @@ dist-ssr
 .git.bak
 
 .env
-blog.db
+*.db
