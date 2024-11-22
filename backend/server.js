@@ -1,9 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import router from './routes/index.js';
+import postRoutes from './routes/index.js';
+import authRoutes from './routes/authRoutes.js';
 
-
-// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -12,9 +11,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 
-
-// Use the router
-app.use('/api', router);
+// Routes
+app.use('/api', postRoutes);
+app.use('/api', authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
