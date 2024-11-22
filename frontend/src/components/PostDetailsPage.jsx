@@ -50,7 +50,7 @@ const PostDetailsPage = () => {
         <div className="flex items-center justify-center h-screen bg-gradient-to-b from-red-400 to-gray-700">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
                 <figure className="flex justify-center mb-6">
-                    <img src="https://picsum.photos/200/300" alt={post.title} className="h-40 w-40 object-cover border-b border-gray-300" />
+                    <img src={post.image} alt={post.title} className="h-40 w-40 object-cover border-b border-gray-300" />
                 </figure>
                 <div className="card-body p-6">
                     <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">{post.title}</h1>
