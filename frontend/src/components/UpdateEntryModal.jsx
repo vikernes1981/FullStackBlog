@@ -1,94 +1,119 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
-import { updatePost } from '../services/postService'; // Adjust the import path accordingly
+import React, { useState } from 'react';
 
 function UpdateEntryModal({ isOpen, onClose, onUpdate, entry }) {
-    // Add prop validation
-    UpdateEntryModal.propTypes = {
-        isOpen: PropTypes.bool.isRequired,
-        onClose: PropTypes.func.isRequired,
-        onUpdate: PropTypes.func.isRequired,
-        entry: PropTypes.object.isRequired,
-    };
+  const [title, setTitle] = useState(entry.title);
+  const [content, setContent] = useState(entry.content);
+  const [image, setImage] = useState(entry.image);
 
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const navigate = useNavigate();
+  const handleUpdate = async () => {
+    const updatedEntry = {};
+    if (title !== entry.title) updatedEntry.title = title;
+    if (content !== entry.content) updatedEntry.content = content;
+    if (image !== entry.image) updatedEntry.image = image;
 
-    useEffect(() => {
-        if (entry) {
-            setTitle(entry.title);
-            setContent(entry.content);
-        }
-    }, [entry]);
+    if (Object.keys(updatedEntry).length === 0) {
+      alert('No changes detected!');
+      return;
+    }
 
-    const handleUpdate = async () => {
-        if (!title && !content) {
-            alert('Please fill in at least one field');
-            return;
-        }
+    try {
+      const response = await fetch(`http://localhost:3000/api/entries/${entry.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(updatedEntry), // Send only modified fields
+      });
 
-        const updatedFields = {};
-        if (title) updatedFields.title = title;
-        if (content) updatedFields.content = content;
+      if (!response.ok) {
+        throw new Error('Failed to update entry');
+      }
 
-        try {
-            const response = await updatePost(entry.id, updatedFields);
-            onUpdate(response);
-            onClose();
-        } catch (error) {
-            console.error('Error updating the entry:', error);
-            alert('An error occurred while updating the entry. Please try again.');
-        }
-    };
+      const updatedPost = await response.json();
+      onUpdate(updatedPost);
+      onClose();
+    } catch (error) {
+      console.error('Error updating post:', error);
+    }
+  };
 
-    const handleBackToHomepage = () => {
-        navigate('/');
-    };
+  return isOpen ? (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 z-50">
+      <div className="modal-box relative w-11/12 max-w-2xl bg-white rounded-xl shadow-lg p-8">
+        <button
+          className="btn btn-sm btn-circle absolute right-4 top-4 hover:bg-red-500"
+          onClick={onClose}
+        >
+          ✕
+        </button>
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Update Post</h2>
 
-    if (!isOpen) return null;
+        <div className="flex flex-col items-center gap-6">
+          <div className="flex justify-center mb-4">
+            <img
+              src={image || 'https://via.placeholder.com/150'}
+              alt="Post"
+              className="w-40 h-40 rounded-md shadow-md object-cover border border-gray-300"
+            />
+          </div>
 
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-800">Update Entry</h2>
-                <input
-                    type="text"
-                    placeholder="Title"
-                    className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-                <textarea
-                    placeholder="Content"
-                    className="w-full p-3 mb-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                ></textarea>
-                <div className="flex justify-end">
-                    <button
-                        className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg mr-2 hover:bg-gray-400 transition-colors"
-                        onClick={onClose}
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-                        onClick={handleUpdate}
-                    >
-                        Update
-                    </button>
-                    <button
-                        className="bg-green-500 text-white px-4 py-2 rounded-lg ml-2 hover:bg-green-600 transition-colors"
-                        onClick={handleBackToHomepage}
-                    >
-                        Back to Homepage
-                    </button>
-                </div>
-            </div>
+          <div className="form-control w-full">
+            <label className="label text-lg font-medium text-gray-700">
+              Title
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter post title"
+              className="input input-bordered w-full border-2 border-gray-300 focus:border-blue-500"
+            />
+          </div>
+
+          <div className="form-control w-full">
+            <label className="label text-lg font-medium text-gray-700">
+              Content
+            </label>
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Enter post content"
+              className="textarea textarea-bordered w-full h-24 border-2 border-gray-300 focus:border-blue-500"
+            />
+          </div>
+
+          <div className="form-control w-full">
+            <label className="label text-lg font-medium text-gray-700">
+              Image URL
+            </label>
+            <input
+              type="text"
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+              placeholder="Enter image URL"
+              className="input input-bordered w-full border-2 border-gray-300 focus:border-blue-500"
+            />
+          </div>
         </div>
-    );
+
+        <div className="flex justify-end mt-6 gap-4">
+          <button
+            onClick={onClose}
+            className="btn btn-outline border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleUpdate}
+            className="btn bg-blue-500 text-white hover:bg-blue-700"
+          >
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  ) : null;
 }
 
 export default UpdateEntryModal;
