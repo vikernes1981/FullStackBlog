@@ -6,6 +6,9 @@ import AddEntryModal from './AddEntryModal';
 function HomePage({ setIsLoggedIn }) {
   const [entries, setEntries] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setLocalIsLoggedIn] = useState(() => {
+    return !!localStorage.getItem('token');
+  });
 
   // Fetch posts from the backend when the component mounts
   useEffect(() => {
@@ -39,6 +42,7 @@ function HomePage({ setIsLoggedIn }) {
   const handleLogoutClick = () => {
     localStorage.removeItem('token'); // Remove token on logout
     setIsLoggedIn(false); // Update authentication state
+    setLocalIsLoggedIn(false);
   };
 
   const handleEntryClick = (entryId) => {
@@ -55,15 +59,24 @@ function HomePage({ setIsLoggedIn }) {
         />
       </div>
       <div className="flex justify-center mb-6">
-        <Header onAddEntryClick={handleAddEntryClick} setIsLoggedIn={setIsLoggedIn} />
+        {/* Only show Header with buttons if the user is logged in */}
+        {isLoggedIn && (
+          <Header
+            onAddEntryClick={handleAddEntryClick}
+            setIsLoggedIn={setIsLoggedIn}
+          />
+        )}
       </div>
       <EntryList entries={entries} onEntryClick={handleEntryClick} />
-      <AddEntryModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSave={handleSaveEntry}
-        entries={entries}
-      />
+      {/* Add Entry Modal is only accessible if logged in */}
+      {isLoggedIn && (
+        <AddEntryModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleSaveEntry}
+          entries={entries}
+        />
+      )}
     </div>
   );
 }

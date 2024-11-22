@@ -9,6 +9,7 @@ const PostDetailsPage = () => {
     const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+    const isLoggedIn = !!localStorage.getItem('token'); // Check if user is logged in
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -56,9 +57,25 @@ const PostDetailsPage = () => {
                     <div className="prose lg:prose-xl text-gray-700" dangerouslySetInnerHTML={{ __html: post.content }} />
                 </div>
                 <div className="text-center mt-4 flex flex-wrap justify-center gap-2">
-                    <button onClick={() => setIsModalOpen(true)} className="bg-gray-600 text-white py-1 px-3 rounded hover:bg-gray-800">Update Post</button>
-                    <button onClick={handleDelete} className="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-800">Delete Post</button>
-                    <Link to="/" className="bg-gray-600 text-white py-1 px-3 rounded hover:bg-gray-800">Back to Posts</Link>
+                    {isLoggedIn ? (
+                        <>
+                            <button
+                                onClick={() => setIsModalOpen(true)}
+                                className="bg-gray-600 text-white py-1 px-3 rounded hover:bg-gray-800"
+                            >
+                                Update Post
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-800"
+                            >
+                                Delete Post
+                            </button>
+                        </>
+                    ) : null}
+                    <Link to="/" className="bg-gray-600 text-white py-1 px-3 rounded hover:bg-gray-800">
+                        Back to Posts
+                    </Link>
                 </div>
             </div>
             <UpdateEntryModal
