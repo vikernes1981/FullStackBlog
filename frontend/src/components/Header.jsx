@@ -9,6 +9,7 @@ function Header({ onAddEntryClick, setIsLoggedIn }) {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
     navigate('/'); // Redirect to login after logout
+    window.location.reload(); // Refresh the page
   };
 
   return (
