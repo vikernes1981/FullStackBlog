@@ -8,8 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+frontent/node_modules
 dist
-blog.db
 dist-ssr
 *.local
 
@@ -27,4 +27,4 @@ dist-ssr
 .git.bak
 
 .env
-
+blog.db
