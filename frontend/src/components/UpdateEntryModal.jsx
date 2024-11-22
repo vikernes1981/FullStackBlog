@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { useNavigate } from 'react-router-dom';
 
 function UpdateEntryModal({ isOpen, onClose, onUpdate, entry }) {
   const [title, setTitle] = useState(entry.title);
   const [content, setContent] = useState(entry.content);
   const [image, setImage] = useState(entry.image);
+  const navigate = useNavigate();
 
   const handleUpdate = async () => {
     const updatedEntry = {};
@@ -33,13 +37,14 @@ function UpdateEntryModal({ isOpen, onClose, onUpdate, entry }) {
       const updatedPost = await response.json();
       onUpdate(updatedPost);
       onClose();
+      navigate('/');
     } catch (error) {
       console.error('Error updating post:', error);
     }
   };
 
   return isOpen ? (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className="modal-box relative w-11/12 max-w-2xl bg-white rounded-xl shadow-lg p-8">
         <button
           className="btn btn-sm btn-circle absolute right-4 top-4 hover:bg-red-500"
@@ -75,12 +80,14 @@ function UpdateEntryModal({ isOpen, onClose, onUpdate, entry }) {
             <label className="label text-lg font-medium text-gray-700">
               Content
             </label>
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Enter post content"
-              className="textarea textarea-bordered w-full h-24 border-2 border-gray-300 focus:border-blue-500"
-            />
+            <div className="border border-gray-300 rounded-lg overflow-hidden h-60 overflow-y-auto">
+              <ReactQuill
+                value={content}
+                onChange={(value) => setContent(value)}
+                theme="snow"
+                className="h-full"
+              />
+            </div>
           </div>
 
           <div className="form-control w-full">

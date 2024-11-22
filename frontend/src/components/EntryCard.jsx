@@ -18,7 +18,12 @@ function EntryCard({ entry, onClick }) {
         className="rounded-lg w-full h-48 object-cover"
       />
       <h2 className="text-xl font-bold text-gray-800">{entry.title}</h2>
-      <p className="text-gray-600">{entry.content.substring(0, 100)}...</p>
+      <p
+    className="text-gray-600"
+    dangerouslySetInnerHTML={{
+      __html: entry.content.substring(0, 100) + '...',
+    }}
+  />
     </div>
   );
 }
