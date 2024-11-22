@@ -1,39 +1,36 @@
-import pg from "pg";
-import dotenv from 'dotenv';
+import sqlite3 from 'sqlite3';
+import { open } from 'sqlite';
 
-const { Pool } = pg;
+// Open the SQLite database
+const initializeDatabase = async () => {
+  const db = await open({
+    filename: './blog.db',
+    driver: sqlite3.Database
+  });
 
-// Load environment variables
-dotenv.config();
+  // Create the entries table
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS entries (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      date TEXT NOT NULL,
+      image TEXT,
+      content TEXT NOT NULL
+    );
+  `);
 
-// Create a pool for connecting to PostgreSQL
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+  // Create the users table
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL UNIQUE,
+      password TEXT NOT NULL
+    );
+  `);
 
-// Create the entries table if it doesn't exist
-const createTableQuery = `
-  CREATE TABLE IF NOT EXISTS entries (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    date DATE NOT NULL,
-    image TEXT,
-    content TEXT NOT NULL
-  );
-`;
+  return db;
+};
 
-// pool.query(createTableQuery)
-//   .then(() => console.log("Table 'entries' created successfully"))
-//   .catch((err) => console.error("Error creating table 'entries':", err));
-//   // Insert dummy entries into the entries table
-//   const insertDummyEntriesQuery = `
-//     INSERT INTO entries (title, date, image, content) VALUES
-//     ('First Entry', '2023-01-01', 'https://example.com/image1.jpg', 'This is the content of the first entry.'),
-//     ('Second Entry', '2023-02-01', 'https://example.com/image2.jpg', 'This is the content of the second entry.'),
-//     ('Third Entry', '2023-03-01', 'https://example.com/image3.jpg', 'This is the content of the third entry.');
-//   `;
+const db = await initializeDatabase();
 
-//   pool.query(insertDummyEntriesQuery)
-//     .then(() => console.log("Dummy entries inserted successfully"))
-//     .catch((err) => console.error("Error inserting dummy entries:", err));
-export default pool;
+export default db;
