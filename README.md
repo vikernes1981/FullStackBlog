@@ -82,8 +82,38 @@ Start the React app:
 
 Usage
 
-    Visit the homepage (http://localhost:5173) to view all posts.
-    Login at /login using your admin credentials to manage posts.
+## **User Registration and Login Instructions**
+
+### **Step 1: Register**
+To register as a user, follow these steps:
+1. Navigate to `http://localhost/login`.
+2. Click on the "Register" button to create a new account.
+3. Fill in your details (e.g., email and password) to complete the registration process.
+
+### **Step 2: Login**
+Once registered, return to `http://localhost/login` and use your credentials to log in.
+
+---
+
+### **Important Note**
+After you register your desired users, **remove the registration feature from the code** to disable further registrations. This ensures that only the intended users can access the admin functionalities of the blog.
+
+To remove registration:
+- Delete or comment out the `/signup` route in your `App.jsx`.
+- Optionally, remove the `SignUpPage` component entirely.
+
+For example, in `App.jsx`:
+```javascript
+<Router>
+  <Routes>
+    <Route path="/" element={<HomePage />} />
+    <Route path="/entries/:id" element={<PostDetailsPage />} />
+    <Route path="/login" element={<LoginPage onLogin={() => setIsLoggedIn(true)} />} />
+
+    {/* Remove or comment out this line */}
+    {/* <Route path="/signup" element={<SignUpPage />} /> */}
+  </Routes>
+</Router>
 
 Future Enhancements
 
