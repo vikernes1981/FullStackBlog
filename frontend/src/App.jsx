@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
-import SignUpPage from './components/SignUpPage';
 import CreatePostPage from './components/CreatePostPage';
 import PostDetailsPage from './components/PostDetailsPage';
 
@@ -35,28 +34,18 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={
-            isLoggedIn ? (
-              <HomePage setIsLoggedIn={setIsLoggedIn} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+        {/* Public Routes */}
+        <Route path="/" element={<HomePage setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/entries/:id" element={<PostDetailsPage />} />
+
+        {/* Protected Routes */}
         <Route
           path="/login"
           element={<LoginPage onLogin={() => setIsLoggedIn(true)} />}
         />
-        <Route path="/signup" element={<SignUpPage />} />
         <Route
           path="/create"
           element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/entries/:id"
-          element={isLoggedIn ? <PostDetailsPage /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>
