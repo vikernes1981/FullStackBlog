@@ -47,14 +47,14 @@ const PostDetailsPage = () => {
     if (!post) return <div className="loading loading-spinner loading-lg"></div>;
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gradient-to-b from-red-400 to-gray-700">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-600 to-black">
+            <div className="bg-gradient-to-b from-red-800 to-white p-12 rounded-lg shadow-lg w-full max-w-3xl">
                 <figure className="flex justify-center mb-6">
-                    <img src={post.image} alt={post.title} className="h-40 w-40 object-cover border-b border-gray-300" />
+                    <img src={post.image} alt={post.title} className="h-60 w-60 object-cover border-b border-gray-300" />
                 </figure>
                 <div className="card-body p-6">
-                    <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">{post.title}</h1>
-                    <div className="prose lg:prose-xl text-gray-700" dangerouslySetInnerHTML={{ __html: post.content }} />
+                    <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">{post.title}</h1>
+                    <div className="prose lg:prose-xl text-gray-700 h-60 overflow-y-auto" dangerouslySetInnerHTML={{ __html: post.content }} />
                 </div>
                 <div className="text-center mt-4 flex flex-wrap justify-center gap-2">
                     {isLoggedIn ? (
