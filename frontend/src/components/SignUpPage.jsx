@@ -8,31 +8,26 @@ function SignUpPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-    // Get existing users from local storage
-    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-    // Check if email already exists
-    const userExists = existingUsers.some((user) => user.email === email);
-    if (userExists) {
-      setError('Email already exists');
-      return;
+  
+    try {
+      const response = await fetch('http://localhost:3000/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: email, password }),
+      });
+  
+      if (!response.ok) throw new Error('Failed to sign up');
+  
+      navigate('/login'); // Redirect to login
+    } catch {
+      setError('Failed to sign up. Try again.');
     }
-    // Create new user object
-    const newUser = {
-      email,
-      password,
-    };
-    // Add new user to existing users
-    existingUsers.push(newUser);
-    // Store updated users in local storage
-    localStorage.setItem('users', JSON.stringify(existingUsers));
-    // Handle sign up logic here (e.g., API call)
-    navigate('/login'); // Redirect to homepage after successful sign up
   };
 
   return (

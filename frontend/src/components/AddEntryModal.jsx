@@ -16,9 +16,19 @@ function AddEntryModal({ isOpen, onClose, onSave, entries }) {
   const [image, setImage] = useState('');
   const [content, setContent] = useState('');
 
-  const email = JSON.parse(localStorage.getItem('loggedInUser')).email;
-  
+  // Safely retrieve email from localStorage
+  const loggedInUser = localStorage.getItem('loggedInUser');
+  console.log('loggedInUser from localStorage:', loggedInUser);
+  const email = loggedInUser ? JSON.parse(loggedInUser).email : null;
+  console.log('Parsed email:', email);
+
+
   const handleSave = async () => {
+    if (!email) {
+      alert('You must be logged in to save an entry.');
+      return;
+    }
+
     if (!title || !date || !content) {
       alert('Please fill in all fields');
       return;
@@ -33,7 +43,7 @@ function AddEntryModal({ isOpen, onClose, onSave, entries }) {
     const newEntry = { email, title, date, image, content };
 
     try {
-      const response = await createPost(newEntry);
+      await createPost(newEntry);
       onSave(newEntry);
       onClose();
     } catch (error) {

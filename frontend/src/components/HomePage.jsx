@@ -3,7 +3,7 @@ import Header from './Header';
 import EntryList from './EntryList';
 import AddEntryModal from './AddEntryModal';
 
-function HomePage() {
+function HomePage({ setIsLoggedIn }) {
   const [entries, setEntries] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -29,6 +29,7 @@ function HomePage() {
 
   const handleAddEntryClick = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
+
   const handleSaveEntry = (entry) => {
     const updatedEntries = [...entries, entry];
     setEntries(updatedEntries);
@@ -36,20 +37,25 @@ function HomePage() {
   };
 
   const handleLogoutClick = () => {
-    // Your logout logic here
+    localStorage.removeItem('token'); // Remove token on logout
+    setIsLoggedIn(false); // Update authentication state
   };
 
   const handleEntryClick = (entryId) => {
-    // Your entry click logic here
+    console.log('Entry clicked:', entryId); // Implement navigation or detailed view logic
   };
 
   return (
     <div className="min-h-screen p-4 bg-gradient-to-b from-red-400 to-gray-700">
       <div className="flex justify-center mb-6">
-        <img src="http://i.huffpost.com/gen/2395634/images/o-DIARY-facebook.jpg" alt="Login Illustration" className="h-100% w-100% sm:h-40 sm:w-40 lg:w-60 lg:h-60" />
+        <img
+          src="http://i.huffpost.com/gen/2395634/images/o-DIARY-facebook.jpg"
+          alt="Login Illustration"
+          className="h-100% w-100% sm:h-40 sm:w-40 lg:w-60 lg:h-60"
+        />
       </div>
       <div className="flex justify-center mb-6">
-        <Header onAddEntryClick={handleAddEntryClick} onLogoutClick={handleLogoutClick} />
+        <Header onAddEntryClick={handleAddEntryClick} setIsLoggedIn={setIsLoggedIn} />
       </div>
       <EntryList entries={entries} onEntryClick={handleEntryClick} />
       <AddEntryModal

@@ -8,31 +8,31 @@ function LoginPage({ onLogin }) {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Get the list of users from localStorage
-    const userList = JSON.parse(localStorage.getItem('users'));
-
-    // Find the user with matching email and password
-    const user = userList.find((user) => user.email === email && user.password === password);
-
-    if (user) {
-      setError('');
+  
+    try {
+      const response = await fetch('http://localhost:3000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: email, password }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
+  
+      const { token } = await response.json();
+      const user = { email }; // Use the email as part of the user object
+      localStorage.setItem('token', token);
+      localStorage.setItem('loggedInUser', JSON.stringify(user)); // Store the logged-in user
       onLogin();
       navigate('/');
-      localStorage.setItem('isLoggedIn', true); // Store login status in localStorage
-      localStorage.setItem('loggedInUser', JSON.stringify(user)); // Store logged in user in localStorage
-
-      // Get the list of entries from localStorage for the logged in user
-      const entriesList = JSON.parse(localStorage.getItem(user.email));
-
-      // Display the entries list
-      console.log(entriesList); // Replace this with your desired logic to display the entries list
-    } else {
+    } catch (err) {
       setError('Invalid email or password');
     }
   };
+  
 
   const handleSignUp = () => {
     navigate('/signup'); // Navigate to Sign Up page
