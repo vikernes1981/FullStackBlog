@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
+import SignUpPage from './components/SignUpPage';
 import CreatePostPage from './components/CreatePostPage';
 import PostDetailsPage from './components/PostDetailsPage';
 
@@ -36,13 +37,11 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<HomePage setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/entries/:id" element={<PostDetailsPage />} />
+        <Route path="/entries/:id" element={<PostDetailsPage isLoggedIn={isLoggedIn} />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage onLogin={() => setIsLoggedIn(true)} />} />
 
         {/* Protected Routes */}
-        <Route
-          path="/login"
-          element={<LoginPage onLogin={() => setIsLoggedIn(true)} />}
-        />
         <Route
           path="/create"
           element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />}

@@ -8,7 +8,7 @@ function Header({ onAddEntryClick, setIsLoggedIn }) {
   const handleLogoutClick = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
-    navigate('/login'); // Redirect to login after logout
+    navigate('/'); // Redirect to login after logout
   };
 
   return (
