@@ -50,7 +50,7 @@ function HomePage({ setIsLoggedIn }) {
   };
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-b from-red-400 to-gray-700">
+    <div className="min-h-screen p-4 bg-gradient-to-b from-gray-600 to-black">
       <div className="flex justify-center mb-6">
         <img
           src="http://i.huffpost.com/gen/2395634/images/o-DIARY-facebook.jpg"
