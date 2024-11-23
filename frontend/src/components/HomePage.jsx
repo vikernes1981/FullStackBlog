@@ -52,11 +52,11 @@ function HomePage({ setIsLoggedIn }) {
   return (
     <div className="min-h-screen p-4 bg-gradient-to-b from-gray-600 to-black">
       <div className="flex justify-center mb-6">
-        <img
-          src="http://i.huffpost.com/gen/2395634/images/o-DIARY-facebook.jpg"
+        {/* <img
+          src="https://c2.staticflickr.com/4/3187/2741458748_5c6f5fc4da_b.jpg"
           alt="Login Illustration"
           className="h-100% w-100% sm:h-40 sm:w-40 lg:w-60 lg:h-60"
-        />
+        /> */}
       </div>
       <div className="flex justify-center mb-6">
         {/* Only show Header with buttons if the user is logged in */}
@@ -77,7 +77,9 @@ function HomePage({ setIsLoggedIn }) {
           entries={entries}
         />
       )}
+      
     </div>
+    
   );
 }
 

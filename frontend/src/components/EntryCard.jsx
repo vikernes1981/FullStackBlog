@@ -6,7 +6,7 @@ function EntryCard({ entry, onClick }) {
 
   return (
     <div
-      className="bg-gradient-to-b from-red-800 to-white shadow-lg rounded-lg p-4 cursor-pointer"
+      className="bg-gradient-to-b from-gray-400 to-[#D3EEDD] shadow-lg rounded-lg p-4 cursor-pointer"
       onClick={onClick}
     >
       <img
