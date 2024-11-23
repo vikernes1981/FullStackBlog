@@ -14,7 +14,6 @@ function Header({ onAddEntryClick, setIsLoggedIn }) {
 
   return (
     <header className="flex justify-between items-center p-4 bg-gray-800 text-white">
-      <h1 className="text-xl font-bold">My Blog</h1>
       <div>
         <button
           className="bg-blue-500 px-4 py-2 rounded mr-2"
