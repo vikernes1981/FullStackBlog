@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { getPostById, deletePost } from '../services/postService';
 import { useParams, Link } from 'react-router-dom';
 import UpdateEntryModal from './UpdateEntryModal';
-import ReactMarkdown from 'react-markdown';
 
 const PostDetailsPage = () => {
     const { id } = useParams();
@@ -48,7 +47,7 @@ const PostDetailsPage = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-600 to-black p-6">
-            <div className="bg-gradient-to-b from-red-800 to-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+            <div className="bg-gradient-to-b from-gray-400 to-[#D3EEDD] p-6 rounded-lg shadow-lg w-full max-w-4xl">
                 <figure className="flex justify-center mb-6">
                     <img
                         src={post.image}
@@ -58,9 +57,7 @@ const PostDetailsPage = () => {
                 </figure>
                 <div className="card-body">
                     <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">{post.title}</h1>
-                    {/* Render content using react-markdown */}
                     <div className="prose lg:prose-lg text-gray-800 break-words overflow-wrap-anywhere" dangerouslySetInnerHTML={{ __html: post.content }}>
-                        {/* <ReactMarkdown>{post.content}</ReactMarkdown> */}
                     </div>
                 </div>
                 <div className="text-center mt-4 flex flex-wrap justify-center gap-2">

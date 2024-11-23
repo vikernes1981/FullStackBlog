@@ -5,6 +5,7 @@ import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SignUpPage';
 import CreatePostPage from './components/CreatePostPage';
 import PostDetailsPage from './components/PostDetailsPage';
+import Footer from './components/Footer';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -47,6 +48,7 @@ function App() {
           element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />}
         />
       </Routes>
+      <Footer />
     </Router>
   );
 }
