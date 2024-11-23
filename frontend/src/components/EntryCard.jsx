@@ -17,13 +17,15 @@ function EntryCard({ entry, onClick }) {
         }}
         className="rounded-lg w-full h-48 object-cover"
       />
-      <h2 className="text-xl font-bold text-gray-800">{entry.title}</h2>
+      <div className="flex flex-col items-center">
+        <h2 className="text-xl font-bold text-gray-800">{entry.title}</h2>
+      </div>
       <p
-    className="text-gray-600"
-    dangerouslySetInnerHTML={{
-      __html: entry.content.substring(0, 100) + '...',
-    }}
-  />
+        className="text-gray-600"
+        dangerouslySetInnerHTML={{
+          __html: entry.content.substring(0, 100) + '...',
+        }}
+      />
     </div>
   );
 }
