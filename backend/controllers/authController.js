@@ -1,9 +1,11 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import db from '../db.js';
+import dotenv from 'dotenv';
 
-const SECRET_KEY = 'your_secret_key'; // Change this to an environment variable
+dotenv.config();
 
+const SECRET_KEY = process.env.SECRET_KEY;
 // Register a new user
 export const registerUser = async (req, res) => {
   const { username, password } = req.body;
