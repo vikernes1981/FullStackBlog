@@ -6,50 +6,31 @@ import SignUpPage from './components/SignUpPage';
 import CreatePostPage from './components/CreatePostPage';
 import PostDetailsPage from './components/PostDetailsPage';
 import Footer from './components/Footer';
+import SnippetsPage from './components/SnippetsPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem('token'); // Check login status from token
   });
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      fetch(`${import.meta.env.VITE_API_BASE_URL}/validate-token`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error('Invalid token');
-          return res.json();
-        })
-        .then(() => setIsLoggedIn(true))
-        .catch(() => {
-          localStorage.removeItem('token');
-          setIsLoggedIn(false);
-        });
-    }
+    setIsLoggedIn(!!token); // Update login status when token changes
   }, []);
-  
 
   return (
     <Router>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<HomePage setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/entries/:id" element={<PostDetailsPage isLoggedIn={isLoggedIn} />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginPage onLogin={() => setIsLoggedIn(true)} />} />
-
-        {/* Protected Routes */}
-        <Route
-          path="/create"
-          element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />}
-        />
-      </Routes>
-      <Footer />
+      <div className="flex flex-col min-h-screen">
+        <Routes>
+          <Route path="/" element={<HomePage setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />} />
+          <Route path="/login" element={<LoginPage onLogin={setIsLoggedIn} />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/create" element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />} />
+          <Route path="/entries/:id" element={isLoggedIn ? <PostDetailsPage /> : <Navigate to="/login" />} />
+          <Route path="/snippets" element={isLoggedIn ? <SnippetsPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" />} />
+        </Routes>
+        <Footer />
+      </div>
     </Router>
   );
 }
