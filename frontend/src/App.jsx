@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      fetch('http://localhost:3000/api/validate-token', {
+      fetch(`${import.meta.env.VITE_API_BASE_URL}/validate-token`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -32,6 +32,7 @@ function App() {
         });
     }
   }, []);
+  
 
   return (
     <Router>

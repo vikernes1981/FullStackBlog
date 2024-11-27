@@ -28,6 +28,18 @@ const initializeDatabase = async () => {
     );
   `);
 
+  // Create the snippets table
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS snippets (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      code TEXT NOT NULL,
+      language TEXT,
+      tags TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   return db;
 };
 
