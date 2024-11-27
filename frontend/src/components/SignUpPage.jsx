@@ -10,25 +10,37 @@ function SignUpPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Check if passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
   
     try {
-      const response = await fetch('http://localhost:3000/api/register', {
+      // Use environment variable for API base URL
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  
+      const response = await fetch(`${API_BASE_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: email, password }),
       });
   
-      if (!response.ok) throw new Error('Failed to sign up');
+      if (!response.ok) {
+        // Parse error message if available
+        const errorData = await response.json().catch(() => ({}));
+        const message = errorData.message || 'Failed to sign up';
+        throw new Error(message);
+      }
   
-      navigate('/login'); // Redirect to login
-    } catch {
-      setError('Failed to sign up. Try again.');
+      // Redirect to login on success
+      navigate('/login');
+    } catch (error) {
+      setError(error.message || 'Failed to sign up. Try again.');
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center h-screen bg-gradient-to-b from-blue-400 to-gray-700">
