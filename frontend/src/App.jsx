@@ -27,7 +27,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/create" element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />} />
           <Route path="/entries/:id" element={<PostDetailsPage /> } />
-          <Route path="/snippets" element={isLoggedIn ? <SnippetsPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" />} />
+          <Route path="/snippets" element={<SnippetsPage />} />
         </Routes>
         <Footer />
       </div>

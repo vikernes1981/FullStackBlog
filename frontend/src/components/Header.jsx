@@ -14,32 +14,39 @@ function Header({ onAddEntryClick, setIsLoggedIn }) {
 
   return (
     <header className="flex justify-between items-center p-4 bg-gray-800 text-white">
+      {/* Home Button */}
       <button
         onClick={() => navigate('/')}
-        className="mr-2 bg-green-500 px-4 py-2 rounded hover:bg-green-600"
+        className="bg-green-500 px-4 py-2 rounded hover:bg-green-600"
       >
         Home
       </button>
-      <div>
-      <button
-        onClick={() => navigate('/snippets')}
-        className="mr-2 bg-yellow-500 px-4 py-2 rounded hover:bg-yellow-600"
-      >
-        Snippets
-      </button>
+
+      <div className="flex items-center space-x-4">
+        {/* Conditionally render buttons for logged-in users */}
         {onAddEntryClick && (
           <button
             onClick={onAddEntryClick}
-            className="mr-2 bg-blue-500 px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600"
           >
             Add Entry
           </button>
         )}
+        {setIsLoggedIn && (
+          <button
+            onClick={handleLogoutClick}
+            className="bg-red-500 px-4 py-2 rounded hover:bg-red-600"
+          >
+            Logout
+          </button>
+        )}
+
+        {/* Snippets Button */}
         <button
-          onClick={handleLogoutClick}
-          className="bg-red-500 px-4 py-2 rounded hover:bg-red-600"
+          onClick={() => navigate('/snippets')}
+          className="bg-yellow-500 px-4 py-2 rounded hover:bg-yellow-600"
         >
-          Logout
+          Snippets
         </button>
       </div>
     </header>
@@ -48,11 +55,12 @@ function Header({ onAddEntryClick, setIsLoggedIn }) {
 
 Header.propTypes = {
   onAddEntryClick: PropTypes.func, // Optional: only for pages needing "Add Entry"
-  setIsLoggedIn: PropTypes.func.isRequired, // Required: logout functionality
+  setIsLoggedIn: PropTypes.func, // Optional: only for logged-in users
 };
 
 Header.defaultProps = {
-  onAddEntryClick: null, // No "Add Entry" button by default
+  onAddEntryClick: null, // Default: No "Add Entry" button
+  setIsLoggedIn: null,  // Default: No logout button for unlogged users
 };
 
 export default Header;
