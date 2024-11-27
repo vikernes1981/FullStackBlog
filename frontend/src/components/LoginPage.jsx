@@ -28,6 +28,7 @@ function LoginPage({ onLogin }) {
       localStorage.setItem('loggedInUser', JSON.stringify(user)); // Store the logged-in user
       onLogin();
       navigate('/');
+      window.location.reload(); // Refresh the page
     } catch (err) {
       setError('Invalid email or password');
     }
@@ -35,7 +36,7 @@ function LoginPage({ onLogin }) {
   
 
   const handleSignUp = () => {
-    navigate('/signup'); // Navigate to Sign Up page
+    navigate('/register'); // Navigate to Sign Up page
   };
 
   const handleForgotPassword = () => {
