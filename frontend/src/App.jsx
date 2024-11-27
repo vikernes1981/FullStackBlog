@@ -26,7 +26,7 @@ function App() {
           <Route path="/login" element={<LoginPage onLogin={setIsLoggedIn} />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/create" element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />} />
-          <Route path="/entries/:id" element={isLoggedIn ? <PostDetailsPage /> : <Navigate to="/login" />} />
+          <Route path="/entries/:id" element={<PostDetailsPage /> } />
           <Route path="/snippets" element={isLoggedIn ? <SnippetsPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" />} />
         </Routes>
         <Footer />
