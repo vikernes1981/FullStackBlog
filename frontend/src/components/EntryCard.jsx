@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function EntryCard({ entry, onClick }) {
+function EntryCard({ entry }) {
   const fallbackImage = "https://picsum.photos/200/300";
 
   return (
-    <div
-      className="bg-gradient-to-b from-gray-400 to-[#D3EEDD] shadow-lg rounded-lg p-4 cursor-pointer"
-      onClick={onClick}
-    >
+    <div className="bg-gradient-to-b from-gray-400 to-[#D3EEDD] shadow-lg rounded-lg p-4 cursor-pointer">
       <img
         src={entry.image || fallbackImage} // Use the provided image or fallback
         alt={entry.title}
@@ -32,11 +29,11 @@ function EntryCard({ entry, onClick }) {
 
 EntryCard.propTypes = {
   entry: PropTypes.shape({
+    id: PropTypes.number.isRequired, // Ensure the ID is required
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     image: PropTypes.string, // Optional image field
   }).isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default EntryCard;

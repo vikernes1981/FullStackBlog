@@ -3,34 +3,37 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import EntryCard from './EntryCard';
 
-function EntryList({ entries, onEntryClick }) {
+function EntryList({ entries }) {
   const navigate = useNavigate();
 
-  // Save entries to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('entries', JSON.stringify(entries));
-  }, [entries]);
-
-  // Log entries to console
-  console.log('Entries:', entries);
-
   const handleEntryClick = (entry) => {
-    onEntryClick(entry);
     navigate(`/entries/${entry.id}`);
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {entries.map((entry) => (
-        <EntryCard key={entry.date} entry={entry} onClick={() => handleEntryClick(entry)} />
+        <div
+          key={entry.id}
+          onClick={() => handleEntryClick(entry)} // Navigate on card click
+          className="cursor-pointer"
+        >
+          <EntryCard entry={entry} />
+        </div>
       ))}
     </div>
   );
 }
 
 EntryList.propTypes = {
-  entries: PropTypes.array.isRequired,
-  onEntryClick: PropTypes.func.isRequired,
+  entries: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+      image: PropTypes.string, // Optional
+    })
+  ).isRequired,
 };
 
 export default EntryList;
