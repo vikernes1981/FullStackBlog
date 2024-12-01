@@ -32,6 +32,7 @@ function HomePage({ setIsLoggedIn, isLoggedIn }) {
   return (
     <div className="min-h-screen p-4 bg-gradient-to-b from-gray-600 to-black">
       <Header
+        isLoggedIn={isLoggedIn}
         onAddEntryClick={isLoggedIn ? handleAddEntryClick : null} // "Add Entry" button only for logged-in users
         setIsLoggedIn={isLoggedIn ? setIsLoggedIn : null} // Logout button only for logged-in users
       />

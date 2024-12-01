@@ -9,14 +9,14 @@ export const createSnippet = async (req, res) => {
         }
         const result = await db.run(
             `INSERT INTO snippets (title, code, language, tags) VALUES (?, ?, ?, ?)`,
-            [title, code, language, tags]
+            [title, code, language, tags?.join(',')] // Store tags as a comma-separated string
         );
         const newSnippet = {
             id: result.lastID,
             title,
             code,
             language,
-            tags,
+            tags: tags || [], // Ensure tags is always an array
         };
         res.status(201).json(newSnippet);
     } catch (err) {
@@ -42,10 +42,34 @@ export const getSnippets = async (req, res) => {
                 params.push(`%${tag}%`);
             }
         }
-        const snippets = await db.all(query, params);
+        const rows = await db.all(query, params);
+
+        // Normalize tags to always be an array
+        const snippets = rows.map((row) => ({
+            ...row,
+            tags: row.tags ? row.tags.split(',') : [],
+        }));
+
         res.status(200).json(snippets);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch snippets.', details: err.message });
+    }
+};
+
+// READ: Get snippet by ID
+export const getSnippetById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const snippet = await db.get(`SELECT * FROM snippets WHERE id = ?`, [id]);
+        if (!snippet) {
+            return res.status(404).json({ error: 'Snippet not found.' });
+        }
+        res.status(200).json({
+            ...snippet,
+            tags: snippet.tags ? snippet.tags.split(',') : [], // Normalize tags
+        });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch snippet.', details: err.message });
     }
 };
 
@@ -60,9 +84,15 @@ export const updateSnippet = async (req, res) => {
         }
         await db.run(
             `UPDATE snippets SET title = ?, code = ?, language = ?, tags = ? WHERE id = ?`,
-            [title, code, language, tags, id]
+            [title, code, language, tags?.join(','), id] // Store tags as a comma-separated string
         );
-        const updatedSnippet = { id, title, code, language, tags };
+        const updatedSnippet = {
+            id,
+            title,
+            code,
+            language,
+            tags: tags || [], // Ensure tags is always an array
+        };
         res.status(200).json(updatedSnippet);
     } catch (err) {
         res.status(500).json({ error: 'Failed to update snippet.', details: err.message });

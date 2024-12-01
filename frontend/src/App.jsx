@@ -7,6 +7,8 @@ import CreatePostPage from './components/CreatePostPage';
 import PostDetailsPage from './components/PostDetailsPage';
 import Footer from './components/Footer';
 import SnippetsPage from './components/SnippetsPage';
+import AudiobookDashboard from './components/AudiobookDashboard';
+import AudiobookDetailsPage from './components/AudiobookDetailsPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -14,20 +16,43 @@ function App() {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token); // Update login status when token changes
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem('token')); // Update login state when token changes
+    };
+
+    window.addEventListener('storage', handleStorageChange); // Listen for token changes
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
         <Routes>
+          {/* Keep all other routes exactly the way you had them */}
           <Route path="/" element={<HomePage setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />} />
           <Route path="/login" element={<LoginPage onLogin={setIsLoggedIn} />} />
-          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/register" element={<SignUpPage />} />
           <Route path="/create" element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />} />
-          <Route path="/entries/:id" element={<PostDetailsPage /> } />
+          <Route path="/entries/:id" element={<PostDetailsPage />} />
           <Route path="/snippets" element={<SnippetsPage />} />
+          <Route
+            path="/audiobooks"
+            element={
+              <AudiobookDashboard
+                setIsLoggedIn={setIsLoggedIn}
+                isLoggedIn={isLoggedIn}
+              />
+            }
+          />
+          <Route
+            path="/audiobooks/:id"
+            element={
+              <AudiobookDetailsPage
+                setIsLoggedIn={setIsLoggedIn}
+                isLoggedIn={isLoggedIn}
+              />
+            }
+          />
         </Routes>
         <Footer />
       </div>
