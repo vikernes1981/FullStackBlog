@@ -21,18 +21,17 @@ function SnippetCard({ snippet, onEdit, onDelete }) {
       </p>
       <div className="flex justify-end mt-4 gap-2">
         <button
-          onClick={() => onEdit(snippet)}
-          className="btn btn-info btn-sm"
-        >
-          Edit
+            onClick={() => onEdit(snippet)}
+            className="bg-yellow-500 px-4 py-2 rounded hover:bg-red-600"        >
+            Edit
         </button>
         <button
-          onClick={() => onDelete(id)}
-          className="btn btn-error btn-sm"
-        >
-          Delete
+            onClick={() => onDelete(id)}
+            className="bg-red-500 px-4 py-2 rounded hover:bg-red-600"        >
+            Delete
         </button>
       </div>
+
     </div>
   );
 }

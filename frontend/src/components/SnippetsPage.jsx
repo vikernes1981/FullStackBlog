@@ -11,7 +11,7 @@ function SnippetsPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentSnippet, setCurrentSnippet] = useState(null); // Track snippet being edited
-  const [filter, setFilter] = useState({ language: '', tag: '' });
+  const [searchTerm, setSearchTerm] = useState(''); // Search term state
   const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem('token')); // Initialize isLoggedIn
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function SnippetsPage() {
           id: Number(snippet.id), // Convert `id` to a number
         }));
         setSnippets(normalizedData);
-        setFilteredSnippets(normalizedData);
+        setFilteredSnippets(normalizedData); // Initially display all snippets
       } catch (error) {
         console.error('Failed to fetch snippets:', error);
       }
@@ -31,11 +31,28 @@ function SnippetsPage() {
     fetchSnippets();
   }, []);
 
+  useEffect(() => {
+    // Filter snippets based on search term
+    const filtered = snippets.filter(
+      (snippet) =>
+        snippet.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        snippet.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (snippet.language || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (Array.isArray(snippet.tags)
+          ? snippet.tags.join(', ')
+          : snippet.tags || ''
+        )
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+    );
+    setFilteredSnippets(filtered);
+  }, [searchTerm, snippets]); // Re-run whenever search term or snippets list changes
+
   const handleAddSnippet = (newSnippet) => {
     const normalizedSnippet = { ...newSnippet, id: Number(newSnippet.id) }; // Ensure `id` is a number
     setSnippets([...snippets, normalizedSnippet]);
     setFilteredSnippets([...snippets, normalizedSnippet]);
-    setIsAddModalOpen(false); // Corrected: Use `setIsAddModalOpen`
+    setIsAddModalOpen(false);
   };
 
   const handleUpdateSnippet = async (id, updatedSnippet) => {
@@ -63,17 +80,6 @@ function SnippetsPage() {
     }
   };
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilter({ ...filter, [name]: value });
-
-    const filtered = snippets.filter((snippet) =>
-      (filter.language ? snippet.language === value : true) &&
-      (filter.tag ? snippet.tags?.includes(value) : true)
-    );
-    setFilteredSnippets(filtered);
-  };
-
   const handleAddSnippetClick = () => setIsAddModalOpen(true); // Open Add Snippet Modal
 
   return (
@@ -95,24 +101,21 @@ function SnippetsPage() {
         )}
       </div>
 
-      {/* Filters */}
-      <div className="flex gap-4 mb-6">
+      {/* Search Bar */}
+      <div className="flex items-center gap-2 mb-6">
         <input
           type="text"
-          name="language"
-          placeholder="Filter by Language"
-          value={filter.language}
-          onChange={handleFilterChange}
-          className="input input-bordered"
+          placeholder="🔍 Search snippets by title, code, language, or tags..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
+          className="input input-bordered w-3/4 bg-gray-800 text-white placeholder-gray-400"
         />
-        <input
-          type="text"
-          name="tag"
-          placeholder="Filter by Tag"
-          value={filter.tag}
-          onChange={handleFilterChange}
-          className="input input-bordered"
-        />
+        <button
+          className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
+          onClick={() => setSearchTerm('')} // Clear search when clicked
+        >
+          Clear
+        </button>
       </div>
 
       {/* Snippet List */}
