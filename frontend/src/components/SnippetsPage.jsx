@@ -87,7 +87,7 @@ function SnippetsPage() {
       <Header
         isLoggedIn={isLoggedIn}
         onAddSnippetClick={isLoggedIn ? handleAddSnippetClick : null}
-        setIsLoggedIn={setIsLoggedIn ? setIsLoggedIn : null}
+        setIsLoggedIn={isLoggedIn ? setIsLoggedIn : null}
       />
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl text-white font-bold">Snippets</h1>

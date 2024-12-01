@@ -34,7 +34,7 @@ function App() {
           <Route path="/register" element={<SignUpPage />} />
           <Route path="/create" element={isLoggedIn ? <CreatePostPage /> : <Navigate to="/login" />} />
           <Route path="/entries/:id" element={<PostDetailsPage />} />
-          <Route path="/snippets" element={<SnippetsPage />} />
+          <Route path="/snippets" element={<SnippetsPage setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />} />
           <Route
             path="/audiobooks"
             element={

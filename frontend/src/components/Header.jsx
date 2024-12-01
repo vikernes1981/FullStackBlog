@@ -14,6 +14,7 @@ function Header({
   const handleLogoutClick = () => {
     localStorage.removeItem('token'); // Remove token
     if (setIsLoggedIn) setIsLoggedIn(false); // Update authentication state
+    window.location.reload();
     navigate('/'); // Redirect to home
   };
 
@@ -58,12 +59,14 @@ function Header({
             Logout
           </button>
         )}
+        {isLoggedIn && (
         <button
           onClick={() => navigate('/snippets')}
           className="bg-yellow-500 px-4 py-2 rounded hover:bg-yellow-600"
         >
           Snippets
         </button>
+        )}
         <button
           onClick={() => navigate('/audiobooks')}
           className="bg-orange-500 px-4 py-2 rounded hover:bg-yellow-600"
