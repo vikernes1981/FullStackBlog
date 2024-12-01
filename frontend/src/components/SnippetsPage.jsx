@@ -91,14 +91,6 @@ function SnippetsPage() {
       />
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl text-white font-bold">Snippets</h1>
-        {isLoggedIn && (
-          <button
-            onClick={handleAddSnippetClick}
-            className="btn btn-primary"
-          >
-            Add Snippet
-          </button>
-        )}
       </div>
 
       {/* Search Bar */}
